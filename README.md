@@ -1,4 +1,4 @@
-# Summary
+# Zero-shot Action Recognition for VR Senario
 
 ## Preprocess
 
@@ -52,7 +52,7 @@ Current issues: Some file names were inconsistent during recording, and there ar
 
 ### Workflow
 
-Prepration: complie Shift-GCN CUDA extensions, reference [https://github.com/kchengiva/Shift-GCN/](here).
+Prepration: Complie Shift-GCN CUDA extensions, reference [https://github.com/kchengiva/Shift-GCN/](here).
 
 Step 0: Split labels into seen/unseen/val sets: ``hku_skeleton_25/label_splits/gen_splits.py``
 
@@ -65,10 +65,17 @@ Step 3: Generate: ``bash gen_hku.sh``
 
 ## Zero-shot Action Recognition
 
-### Models
+### Preparation
+
+Step 1: Create descriptions for each body part ``Model/supplements/call_llm.py``
+
+Step 2: Check descriptions in ``xlsx`` file, generate data for traning. ``Model/supplements/process.py``
 
 
+### Model
 
+
+![Model](./model.png)
 
 
 
@@ -76,13 +83,13 @@ Step 3: Generate: ``bash gen_hku.sh``
 
 | ID        | Experiment Setting                                                                 |
 |-----------|-------------------------------------------------------------------------------------|
-| Baseline  | PURLS                                                                               |
-| 1         | Bidirectional cross-attention: video_enhanced = v2s(video, vis); vis_enhanced = s2v(vis, video) |
-| 2         | Added VR bias_s2v; vis_enq (B,5,256) used as query for cross-attention              |
-| 3         | Added VR bias_v2s; video_enhanced receives bias for symmetric enhancement           |
-| 4         | Alternative VR bias_v2s (different channel) to replace #3 for comparison            |
-| 5         | Simplified: video_enhanced = v2s(video, vis); vis_enhanced = video_enhanced         |
-| 6         | Symmetric gated co-attention: pre-norm + VR bias + bidirectional cross-attn + gated residual fusion for better generalization |
+| Baseline  | [PURLS](https://arxiv.org/pdf/2406.13327)                                                                              |
+| 1         | Bidirectional cross-attention |
+| 2         | Add a bias when using visual feature as query            |
+| 3         | Add a bias when using skeleton feature as query           |
+| 4         | Add biases for all features           |
+| 5         | Only use skeleton feature         |
+| 6         | Symmetric gated co-attention |
 
 | ID        | Overall Accuracy (%) | Not-Weighted Accuracy (%) |
 |-----------|-----------------------|---------------------------|
