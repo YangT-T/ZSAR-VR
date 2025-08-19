@@ -1,0 +1,55 @@
+Experiment_name: hku-try
+base_lr: 0.001
+batch_size: 16
+config: /root/wksp/model/Shift-GCN/config/hku/train_hku.yaml
+device:
+- 0
+eval_interval: 5
+feeder: feeders.feeder.Feeder
+ignore_weights: []
+log_interval: 100
+model: model.shift_gcn.Model
+model_args:
+  graph: graph.hku.Graph
+  graph_args:
+    labeling_mode: spatial
+  num_class: 18
+  num_person: 1
+  num_point: 25
+model_saved_name: ./save_models/hku-try
+nesterov: false
+num_epoch: 20
+num_worker: 32
+only_train_epoch: 2
+only_train_part: true
+optimizer: SGD
+phase: train
+print_log: true
+save_interval: 2
+save_score: false
+seed: 1
+show_topk:
+- 1
+- 5
+start_epoch: 0
+step:
+- 60
+- 80
+- 100
+test_batch_size: 16
+test_feeder_args:
+  data_path: /root/autodl-tmp/data/hku_skeletons/processed/xsub/val_data_joint.npy
+  label_path: /root/autodl-tmp/data/hku_skeletons/processed/xsub/val_label.pkl
+train_feeder_args:
+  data_path: /root/autodl-tmp/data/hku_skeletons/processed/xsub/train_data_joint.npy
+  debug: false
+  label_path: /root/autodl-tmp/data/hku_skeletons/processed/xsub/train_label.pkl
+  normalization: false
+  random_choose: false
+  random_move: false
+  random_shift: false
+  window_size: -1
+warm_up_epoch: 0
+weight_decay: 0.0001
+weights: null
+work_dir: ./work_dir/hku-try
